@@ -1,63 +1,55 @@
-//go:generate goagen bootstrap -d goa-context-sample/design
-
 package main
 
 import (
-	"compress/gzip"
-	"flag"
-	"goa-context-sample/app"
-	"goa-context-sample/controllers"
-	"goa-context-sample/env"
+	"image-changer/actions/color"
+	"image-changer/actions/extention"
+	"image-changer/actions/origin"
 
-	"github.com/deadcheat/goacors"
-	"github.com/goadesign/goa"
-	"github.com/goadesign/goa/middleware"
-	gm "github.com/goadesign/goa/middleware/gzip"
+	"os"
+	"time"
+
+	cli "gopkg.in/urfave/cli.v1"
+)
+
+const (
+	version = "0.0.1"
+	appName = "image-changer"
 )
 
 func main() {
-	// Start your Engine!!
+	app := cli.NewApp()
+	app.Name = appName
+	app.Version = version
+	app.Compiled = time.Now()
 
-	// Create service
-	service := goa.New("goa-context-sample-api")
-	// cors
-	service.Use(goacors.WithConfig(service, &env.CorsConf))
-
-	// Mount middleware
-	service.Use(middleware.RequestID())
-	service.Use(middleware.LogRequest(true))
-	service.Use(middleware.ErrorHandler(service, true))
-	service.Use(middleware.Recover())
-	service.Use(gm.Middleware(gzip.BestSpeed))
-
-	// Mount beer controller
-	b := controllers.NewBeerController(service)
-	app.MountBeerController(service, b)
-
-	// Mount tap controller
-	t := controllers.NewTapController(service)
-	app.MountTapController(service, t)
-
-	// Only On DevelopmentMode
-	if env.OnDevelopment {
-		swg := controllers.NewSwaggerController(service)
-		controllers.MountSwaggerController(service, swg)
+	app.Commands = []cli.Command{
+		{
+			Name:   "origin",
+			Usage:  "そのままの画像を出力する",
+			Action: origin.Origin,
+		},
+		{
+			Name:   "extention",
+			Usage:  "画像の拡張子を変えて出力する",
+			Action: extention.Extention,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "ext, e",
+					Usage: "出力する拡張子(jpg(jpeg)), gif, pngのみ)",
+				},
+			},
+		},
+		{
+			Name:   "color",
+			Usage:  "画像の色を変更する",
+			Action: color.Color,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "type, t",
+					Usage: "変更する色のタイプ",
+				},
+			},
+		},
 	}
-
-	port := flag.Int("p", env.Server.PortNum, "port number. default set on config")
-	docPort := flag.Int("dp", env.Server.DocPort, "port number for doc. default set on config")
-	host := flag.String("h", env.Server.HostName, "name of server host. default set on config")
-	docHost := flag.String("dh", env.Server.DocHostName, "name of server host. default set on config")
-	flag.Parse()
-
-	env.Server.HostName = *host
-	env.Server.PortNum = *port
-
-	env.Server.DocHostName = *docHost
-	env.Server.DocPort = *docPort
-
-	// Start service
-	if err := service.ListenAndServe(env.Server.APIHostString()); err != nil {
-		service.LogError("startup", "err", err)
-	}
+	app.Run(os.Args)
 }
