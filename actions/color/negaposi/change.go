@@ -3,7 +3,7 @@ package negaposi
 import (
 	"image"
 	"image/color"
-	"image/png"
+	"image/jpeg"
 	"os"
 )
 
@@ -16,14 +16,13 @@ func (c *Converter) Convert(img image.Image) error {
 	dest := image.NewRGBA(bounds)
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			c := color.NRGBAModel.Convert(img.At(x, y))
-			col := c.(color.NRGBA)
+			c := color.RGBAModel.Convert(img.At(x, y))
+			col := c.(color.RGBA)
 			cr := uint8(255 - int(col.R))
 			cg := uint8(255 - int(col.G))
 			cb := uint8(255 - int(col.B))
-			dest.Set(x, y, color.NRGBA{cr, cg, cb, col.A})
+			dest.Set(x, y, color.RGBA{cr, cg, cb, col.A})
 		}
 	}
-	png.Encode(c.DstFile, dest)
-	return nil
+	return jpeg.Encode(c.DstFile, dest, nil)
 }

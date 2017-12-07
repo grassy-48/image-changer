@@ -3,7 +3,7 @@ package grayscale
 import (
 	"image"
 	"image/color"
-	"image/png"
+	"image/jpeg"
 	"os"
 )
 
@@ -21,6 +21,5 @@ func (c *Converter) Convert(img image.Image) error {
 			dest.Set(x, y, gray)
 		}
 	}
-	png.Encode(c.DstFile, dest)
-	return nil
+	return jpeg.Encode(c.DstFile, dest, nil)
 }

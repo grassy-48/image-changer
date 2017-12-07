@@ -3,6 +3,7 @@ package main
 import (
 	"image-changer/actions/color"
 	"image-changer/actions/extention"
+	"image-changer/actions/mosaic"
 	"image-changer/actions/origin"
 
 	"os"
@@ -47,6 +48,17 @@ func main() {
 				cli.StringFlag{
 					Name:  "type, t",
 					Usage: "変更する色のタイプ",
+				},
+			},
+		},
+		{
+			Name:   "mosaic",
+			Usage:  "画像にモザイク加工をする",
+			Action: mosaic.Mosaic,
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "particle, p",
+					Usage: "モザイクの粒度",
 				},
 			},
 		},

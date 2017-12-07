@@ -13,7 +13,7 @@ import (
 	cli "gopkg.in/urfave/cli.v1"
 )
 
-const dstFileName string = "%s_%s.png"
+const dstFileName string = "%s_%s.jpg"
 
 func Color(c *cli.Context) error {
 	arg := c.String("type")

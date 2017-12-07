@@ -27,6 +27,8 @@ extention:
 color:
 	@go run main.go color --type=$(type)
 
+mosaic:
+	@go run main.go mosaic --particle=$(particle)
 
 clean:
 	@rm -rf destination/*
