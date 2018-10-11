@@ -10,9 +10,16 @@ phases:
       - echo $GOPATH
 
       - glide up
+
+      - mkdir -p /go/src/github.com/grassy-48/image-changer
+      - mv * /go/src/github.com/grassy-48/image-changer/
+      - mv .git /go/src/github.com/grassy-48/image-changer/
   build:
     commands:
-      - make all
+      - cd /go/src/github.com/grassy-48/image-changer && make all
+  post_build :
+    commands:
+      - cp /go/src/github.com/grassy-48/image-changer/image-changer .
 artifacts:
   files:
     - testGoBuild
