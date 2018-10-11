@@ -3,9 +3,16 @@ version: 0.1
 phases:
   install:
     commands:
-      - sudo add-apt-repository ppa:masterminds/glide && sudo apt-get update
-      - sudo apt-get install glide
-      - make prepare 
+      - go get github.com/Masterminds/glide
+  pre_build:
+    commands:
+      - pwd
+      - echo $GOPATH
+
+      - glide up
   build:
     commands:
-      - make build
+      - make all
+artifacts:
+  files:
+    - testGoBuild
