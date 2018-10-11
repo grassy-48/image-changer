@@ -1,0 +1,8 @@
+hash: f4105b6379fd900f28ce00803870a388d73d8d96b189512250c60e1f3db8b26e
+updated: 2018-10-11T20:54:09.159129+09:00
+imports:
+- name: github.com/mattn/go-bindata
+  version: 46b8933a6deb6b385630110eb59ee560775a68bd
+- name: gopkg.in/urfave/cli.v1
+  version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
+testImports: []

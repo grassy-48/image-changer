@@ -2,7 +2,7 @@
 ifeq ($(OS),Windows_NT)
 	BUILD_TARGET_FILES = image-changer.exe main.go
 else
-	BUILD_TARGET_FILES ?= iamge-changer main.go
+	BUILD_TARGET_FILES ?= image-changer main.go
 endif
 
 all: cleandep depend build
