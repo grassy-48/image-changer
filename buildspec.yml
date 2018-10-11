@@ -9,8 +9,6 @@ phases:
       - pwd
       - echo $GOPATH
 
-      - glide up
-
       - mkdir -p /go/src/github.com/grassy-48/image-changer
       - mv * /go/src/github.com/grassy-48/image-changer/
       - mv .git /go/src/github.com/grassy-48/image-changer/
